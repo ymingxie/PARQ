@@ -1,6 +1,6 @@
 CHECKPOINT_PATH: None
 PRETRAINED_PATH: None
-LOG_PATH: "/work/vig/yimingx/parq_logs"
+LOG_PATH: "./parq_logs"
 NAME: "release"
 LOG_IMAGES: True
 

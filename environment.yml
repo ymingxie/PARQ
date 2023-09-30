@@ -17,6 +17,7 @@ dependencies:
   - torchaudio=0.12.1
   - torchvision=0.13.1
   - cudatoolkit=11.6.0
+  - yacs=0.1.8
   - pip:
     - pytorch-lightning==1.6.5
     - scipy==1.9.3
