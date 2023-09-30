@@ -1,0 +1,56 @@
+CHECKPOINT_PATH: "./checkpoint/parq_release.ckpt"
+PRETRAINED_PATH: None
+LOG_PATH: "/work/vig/yimingx/parq_logs"
+NAME: "release"
+LOG_IMAGES: True
+
+TRAINER:
+  GPUS: 1
+  MAX_EPOCHS: 10
+
+OPTIMIZER:
+  LEARNING_RATE: 1e-4
+  WARMUP_EPOCHS: 0
+
+DATAMODULE:
+  DATA_PATH: './data/scannet/scans'
+  TRAIN_ANNOTATION_PATH: './data/scannet/scan2cad_box3d_anno_view3_overlap/scannet_train_gt_roidb.pkl'
+  VAL_ANNOTATION_PATH: './data/scannet/scan2cad_box3d_anno_view3_overlap/scannet_val_gt_roidb.pkl'
+  BATCH_SIZE: 1
+  NUM_WORKERS: 2
+  NUM_FRAMES_PER_SNIPPET: 3
+  SHUFFLE: False
+
+MODEL:
+  BACKBONE2D:
+    RESNET_NAME: 'resnet50'
+    LAYER: 0
+    FREEZE: False
+
+  TOKENIZER:
+    PATCH_SIZE: 1 # patch size when using tokenization
+    RAY_POINTS_SCALE: [-3, 3, -2, 0.5, 0.25, 5.25] # [min_x, max_x, min_y, max_y, min_z, max_z] used to normalize the points along each ray
+    NUM_SAMPLES: 64 # number of samples along each ray
+    MIN_DEPTH: 0.25 # minimum depth of the ray
+    MAX_DEPTH: 5.25 # maximum depth of the ray
+
+  DECODER:
+    NUM_QUERIES: 256
+    NUM_SEMCLS: 9
+    LOSS_WEIGHT: [5.0, 5.0, 5.0, 1.0]
+    CONF_THRESH: 0.8
+    # the path to the file of the mean size for each object in scannet
+    MEAN_SIZE_PATH: "/work/vig/Datasets/ScanNet/average_scan2cad.txt"
+    EVAL_TYPE: "f1"
+    ENABLE_NMS: True
+    SHARE_MLP_HEADS: True
+    TRACK_SCALE: [-1.5, 1.5, -2, 1, 0, 2]
+    TRANSFORMER:
+      DEC_DIM: 1024
+      DEC_HEADS: 4
+      DEC_FFN_DIM: 768
+      DEC_LAYERS: 8
+      DROPOUT_RATE: 0.1
+      QUERIES_DIM: 1024
+      SCALE: [-3, 3, -2, 0.5, 0.25, 5.25]
+      SHARE_WEIGHTS: True
