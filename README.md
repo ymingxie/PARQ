@@ -1,7 +1,7 @@
 # Pixel-Aligned Recurrent Queries for Multi-View 3D Object Detection
 ### [Project Page](https://ymingxie.github.io/parq) | [Paper](https://arxiv.org/pdf/0000.00000.pdf)
 
-> PlanarRecon: Real-time 3D Plane Detection and Reconstruction from Posed Monocular Videos  
+> Pixel-Aligned Recurrent Queries for Multi-View 3D Object Detection
 > [Yiming Xie](https://ymingxie.github.io), [Huaizu Jiang](https://jianghz.me/), [Georgia Gkioxari*](https://gkioxari.github.io/), [Julian Straub*](http://people.csail.mit.edu/jstraub/)  
 > ICCV 2023
 
