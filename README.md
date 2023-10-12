@@ -1,5 +1,5 @@
 # Pixel-Aligned Recurrent Queries for Multi-View 3D Object Detection
-### [Project Page](https://ymingxie.github.io/parq) | [Paper](https://arxiv.org/pdf/0000.00000.pdf)
+### [Project Page](https://ymingxie.github.io/parq) | [Paper](https://arxiv.org/abs/2310.01401)
 
 > Pixel-Aligned Recurrent Queries for Multi-View 3D Object Detection  
 > [Yiming Xie](https://ymingxie.github.io), [Huaizu Jiang](https://jianghz.me/), [Georgia Gkioxari*](https://gkioxari.github.io/), [Julian Straub*](http://people.csail.mit.edu/jstraub/)  
