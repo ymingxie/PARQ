@@ -3,7 +3,7 @@
 outputs
 *.bin
 checkpoints
-data/
+data/scannet/
 results/
 
 # Byte-compiled / optimized / DLL files
@@ -168,3 +168,4 @@ template.slurm
 */*/__pycache__/
 cluster/
 checkpoint/
+parq_logs/

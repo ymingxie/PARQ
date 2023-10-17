@@ -40,7 +40,7 @@ MODEL:
     LOSS_WEIGHT: [5.0, 5.0, 5.0, 1.0]
     CONF_THRESH: 0.8
     # the path to the file of the mean size for each object in scannet
-    MEAN_SIZE_PATH: "/work/vig/Datasets/ScanNet/average_scan2cad.txt"
+    MEAN_SIZE_PATH: "./data/average_scan2cad.txt"
     EVAL_TYPE: "f1"
     ENABLE_NMS: True
     SHARE_MLP_HEADS: True
