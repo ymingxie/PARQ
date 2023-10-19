@@ -56,6 +56,7 @@ class PARQ(LightningModule):
             cfg.MODEL.TOKENIZER.MIN_DEPTH,
             cfg.MODEL.TOKENIZER.MAX_DEPTH)
         self.box3d_decoder = PARQDecoder(cfg.MODEL.DECODER)
+        self.for_vis = cfg.MODEL.DECODER.FOR_VIS
 
     def prepare_data(self):
         rank = os.getenv("RANK")
@@ -87,7 +88,10 @@ class PARQ(LightningModule):
         outputs = self.box3d_decoder(input_tokens, batch['camera_feature'], batch['T_camera_pseudoCam'], batch['T_world_pseudoCam'], batch['T_world_local'])
         
         # compute loss
-        losses = self.box3d_decoder.loss(outputs, batch['obbs_padded'], batch['T_world_local'], batch['sym'])
+        if "obbs_padded" in batch.keys():
+            losses = self.box3d_decoder.loss(outputs, batch['obbs_padded'], batch['T_world_local'], batch['sym'])
+        else:
+            losses = {"total_loss": 0}
         return losses, outputs
     
     def training_step(self, batch, batch_idx):
@@ -97,11 +101,14 @@ class PARQ(LightningModule):
 
     def validation_step(self, batch, batch_idx):
         losses, outputs = self.forward(batch, batch_idx)
-        self.box3d_decoder.update_metrics(
-                outputs, batch['obbs_padded'], batch['T_world_local'], batch['scene_name']
-            )
+        if 'obbs_padded' in batch.keys():
+            self.box3d_decoder.update_metrics(
+                    outputs, batch['obbs_padded'], batch['T_world_local'], batch['scene_name']
+                )
 
         self.log_step(batch, losses, outputs, batch_idx=batch_idx, stage="val")
+        if self.for_vis:
+            self.vis_output(batch, outputs, output_name='demo_vis')
         return losses['total_loss']
 
     def on_validation_epoch_start(self) -> None:
@@ -272,7 +279,7 @@ class PARQ(LightningModule):
         # Log outputs.
         log_outputs = self.box3d_decoder.log_images(
             outputs,
-            batch['obbs_padded'],
+            batch['obbs_padded'] if 'obbs_padded' in batch.keys() else None,
             batch['T_world_pseudoCam'],
             batch['T_world_local'],
             batch['T_camera_pseudoCam'],
@@ -283,12 +290,15 @@ class PARQ(LightningModule):
             for tag, im in log_outputs.items():
                 log_ims[f"{tag}"] = convert_image(im)
 
-        # Log inputs.
-        log_inputs = self.log_input(
-            batch['rgb_img']
-        )
-        if log_inputs is not None:
-            for tag, im in log_inputs.items():
-                log_ims[f"{tag}"] = convert_image(im)
-
         return log_ims
+
+    def vis_output(self, batch, outputs, output_name='output'):
+        log_ims = self.get_log_images(batch, outputs)
+        
+        image_name = batch["scene_name"][0] + "_" + str(batch["snippet_id"].data.cpu().numpy().item())
+        from PIL import Image
+        if not os.path.exists(output_name):
+            os.makedirs(output_name)
+        for key, value in log_ims.items():
+            value = Image.fromarray(value.transpose(1, 2, 0))
+            value.save("./{}/{}_{}.png".format(output_name, image_name, key))

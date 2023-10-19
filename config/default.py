@@ -7,6 +7,7 @@ _C = CN()
 _C.SEED = 100
 _C.MEMORY_GB = 230
 _C.CHECKPOINT_PATH = None
+_C.DEMO = False
 _C.PRETRAINED_PATH = None # Load the pretrained model, which may have different keys from the current model
 _C.NAME = "release"
 _C.LOG_PATH = "/work/vig/yimingx/parq_logs"

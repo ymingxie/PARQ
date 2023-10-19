@@ -169,3 +169,4 @@ template.slurm
 cluster/
 checkpoint/
 parq_logs/
+demo_vis/

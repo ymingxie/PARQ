@@ -46,7 +46,7 @@ class PARQDecoder(torch.nn.Module):
         self.class_weight = torch.ones(self.num_semcls + 1)  # * class_weight
         # set background class as the last indice
         self.class_weight[self.num_semcls] = 0.1
-        self.for_vis = False
+        self.for_vis = cfg.FOR_VIS
         self.track_scale = cfg.TRACK_SCALE
 
         self.share_mlp_heads = cfg.SHARE_MLP_HEADS
@@ -519,7 +519,7 @@ class PARQDecoder(torch.nn.Module):
             mask=pred_mask[0],
         )
 
-        if obbs_padded[0] != '':
+        if obbs_padded != None:
             obbs_padded = obbs_padded.remove_padding()
             imgs_gt = draw_detections(
                 imgs,

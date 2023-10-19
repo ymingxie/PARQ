@@ -72,6 +72,9 @@ Training with 8 gpus:
 python train.py --cfg ./config/train.yaml TRAINER.GPUS 8
 ```
 
+### Real-time Demo on Custom Data with Camera Poses from ARKit.
+We provide a demo of PARQ running with self-captured ARKit data. Please refer to [DEMO.md](https://github.com/neu-vi/PlanarRecon/blob/main/DEMO.md) for details about capturing and processing the data.
+We also provide the [example data](https://drive.google.com/file/d/12bXoHRD2oco5gcgIH78CkWZTupKi6dRx/view?usp=sharing) captured using iPhoneXR.
 
 <!-- ## Coordinates illustration for ScanNet
 World coordinate: ScanNet world coordinate  
